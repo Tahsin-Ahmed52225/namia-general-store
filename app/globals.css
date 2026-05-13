@@ -1,26 +1,427 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Special+Elite&family=UnifrakturMaguntia&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --parchment: #f0deb4;
+  --parchment-light: #f7ecd3;
+  --parchment-dark: #dfc898;
+  --sepia: #b8934e;
+  --sepia-dark: #8a6a2e;
+  --ink: #1e0f08;
+  --ink-light: #4a2010;
+  --aged: #7a6040;
+  --wax: #7a1515;
+  --wax-dark: #5a0f0f;
+  --cork: #8b6914;
+  --wood: #3d1f0a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+* { box-sizing: border-box; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ── Body: aged parchment with subtle grain ── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #2a1505;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: "Lora", Georgia, serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 { font-family: "Playfair Display", Georgia, serif; }
+.font-typewriter { font-family: "Special Elite", "Courier New", monospace; }
+.font-fraktur { font-family: "UnifrakturMaguntia", serif; }
+
+/* ── Page wrapper: parchment sheet on dark wood ── */
+.page-wrapper {
+  background-color: var(--parchment-light);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(139,96,64,0.1) 28px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  min-height: 100vh;
+  border-left: 6px solid var(--sepia-dark);
+  border-right: 6px solid var(--sepia-dark);
+  box-shadow: 0 0 60px rgba(0,0,0,0.6), inset 0 0 80px rgba(139,96,64,0.08);
+  position: relative;
+}
+
+/* Aged edges */
+.page-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 0% 50%, rgba(139,96,64,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 100% 50%, rgba(139,96,64,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 0%, rgba(44,24,16,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 100%, rgba(44,24,16,0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Store header: ornate wooden sign ── */
+.store-sign {
+  background: linear-gradient(180deg, #4a2a0a 0%, #3a1f06 40%, #2e1804 100%);
+  border-top: 4px solid #8a5a20;
+  border-bottom: 4px solid #8a5a20;
+  position: relative;
+  overflow: hidden;
+}
+
+.store-sign::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px),
+    repeating-linear-gradient(180deg, transparent, transparent 8px, rgba(0,0,0,0.06) 8px, rgba(0,0,0,0.06) 9px);
+  pointer-events: none;
+}
+
+.sign-inner {
+  border: 2px solid rgba(184,147,78,0.4);
+  margin: 10px auto;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-inner::before, .sign-inner::after {
+  content: '✦';
+  position: absolute;
+  color: var(--sepia);
+  font-size: 14px;
+  top: -10px;
+}
+.sign-inner::before { left: 12px; }
+.sign-inner::after  { right: 12px; }
+
+/* ── Cork board (dock area) ── */
+.cork-board {
+  background-color: #b5894a;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(160,120,60,0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(100,70,30,0.4) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.4' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.6 0 0 0 0.4 0 0.4 0 0 0.2 0 0 0.2 0 0.05 0 0 0 0.3 0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)'/%3E%3C/svg%3E");
+  border: 8px solid #2e1804;
+  border-radius: 2px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+  padding: 28px 20px;
+  position: relative;
+}
+
+.cork-board::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(255,200,100,0.12);
+  pointer-events: none;
+}
+
+/* ── Envelope card: pinned to cork board ── */
+.envelope-card {
+  position: relative;
+  background: #ecdfa8;
+  border: 1px solid #b09050;
+  box-shadow:
+    2px 3px 0px rgba(44,24,16,0.15),
+    3px 6px 16px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: visible;
+}
+
+.envelope-card:hover {
+  transform: translateY(-5px) rotate(-1deg) scale(1.02);
+  box-shadow:
+    3px 6px 0px rgba(44,24,16,0.15),
+    6px 14px 28px rgba(0,0,0,0.45);
+  z-index: 10;
+}
+
+/* Pin on envelope */
+.envelope-card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e84545, #8b1a1a);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.3);
+  z-index: 20;
+}
+
+/* V-flap */
+.envelope-flap {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 0;
+  border-left: 50% solid transparent;
+  border-right: 50% solid transparent;
+  border-top: 52px solid #d4b870;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(44,24,16,0.1));
+}
+
+/* Fold lines */
+.envelope-fold-left {
+  position: absolute; bottom: 0; left: 0;
+  width: 0; height: 0;
+  border-bottom: 55px solid #dcc878;
+  border-right: 50% solid transparent;
+  pointer-events: none;
+}
+.envelope-fold-right {
+  position: absolute; bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-bottom: 55px solid #cdb860;
+  border-left: 50% solid transparent;
+  pointer-events: none;
+}
+
+/* Stamp on envelope */
+.envelope-stamp {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 44px;
+  background: var(--parchment-light);
+  border: 2px solid var(--sepia-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  z-index: 3;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  /* Perforated stamp edge */
+  outline: 3px dashed rgba(0,0,0,0.0);
+  background-clip: padding-box;
+  mask-image: radial-gradient(circle at 0 0,transparent 3px,black 3px),
+              radial-gradient(circle at 100% 0,transparent 3px,black 3px),
+              radial-gradient(circle at 0 100%,transparent 3px,black 3px),
+              radial-gradient(circle at 100% 100%,transparent 3px,black 3px);
+}
+
+/* Postmark circle */
+.envelope-postmark {
+  position: absolute;
+  bottom: 62px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(100,60,20,0.35);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+
+/* ── Wax seal ── */
+.wax-seal {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #b22020, var(--wax-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 3px 10px rgba(139,26,26,0.5),
+    inset 0 1px 2px rgba(255,255,255,0.15),
+    inset 0 -2px 4px rgba(0,0,0,0.2);
+  color: #f4d4a0;
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-style: italic;
+  position: relative;
+}
+
+.wax-seal::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,200,150,0.2);
+  pointer-events: none;
+}
+
+/* ── Letter paper ── */
+.letter-paper {
+  background: #fdf6e3;
+  border: 1px solid var(--sepia);
+  box-shadow:
+    2px 3px 12px rgba(44,24,16,0.12),
+    inset 0 0 60px rgba(139,115,85,0.04);
+  line-height: 28px;
+  position: relative;
+}
+
+
+/* ── Old / aged paper for unlocked letter ── */
+.old-paper {
+  background-color: #e8d5a0;
+  background-image:
+    radial-gradient(ellipse at 0% 0%,   rgba(160,100,40,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 0%,  rgba(130,80,20,0.2)  0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%,  rgba(140,90,30,0.2)  0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%,rgba(110,70,15,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%,  rgba(200,160,80,0.08) 0%, transparent 80%);
+  border: 1px solid #a07838;
+  box-shadow:
+    0 4px 20px rgba(44,24,16,0.22),
+    inset 0 0 80px rgba(120,80,20,0.12),
+    inset 2px 2px 6px rgba(160,110,40,0.15),
+    inset -2px -2px 6px rgba(80,40,10,0.1);
+  line-height: 28px;
+  position: relative;
+  filter: sepia(12%);
+}
+
+
+
+/* Torn/burnt edge effect — top and bottom */
+.old-paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(100,60,10,0.1) 0%, transparent 8%),
+    linear-gradient(to top,    rgba(100,60,10,0.1) 0%, transparent 8%);
+  pointer-events: none;
+}
+
+/* ── Unlock page envelope animation ── */
+.envelope-scene { perspective: 900px; }
+
+.envelope-top-flap {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 0;
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  filter: drop-shadow(0 3px 4px rgba(44,24,16,0.15));
+}
+.envelope-top-flap.open { transform: rotateX(180deg); }
+
+.envelope-letter-reveal {
+  position: absolute;
+  left: 8%; right: 8%;
+  bottom: 20px;
+  background: #fdf6e3;
+  border: 1px solid var(--sepia);
+  transform: translateY(0);
+  opacity: 0;
+  transition: transform 0.65s cubic-bezier(0.34, 1.4, 0.64, 1) 0.55s,
+              opacity 0.4s ease 0.55s;
+  z-index: 5;
+  padding: 16px;
+  font-family: "Lora", serif;
+  box-shadow: 0 2px 8px rgba(44,24,16,0.2);
+}
+.envelope-letter-reveal.open {
+  transform: translateY(-130%);
+  opacity: 1;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: "Playfair Display", serif;
+  padding: 10px 32px;
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+  letter-spacing: 0.06em;
+  box-shadow: 2px 2px 0 var(--sepia-dark);
+}
+.btn-primary:hover {
+  background: var(--ink-light);
+  border-color: var(--ink-light);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--sepia-dark);
+}
+.btn-primary:active {
+  transform: translate(1px,1px);
+  box-shadow: 1px 1px 0 var(--sepia-dark);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  font-family: "Playfair Display", serif;
+  padding: 10px 32px;
+  border: 2px solid var(--sepia-dark);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  letter-spacing: 0.06em;
+}
+.btn-secondary:hover { background: rgba(44,24,16,0.07); }
+
+/* ── Inputs ── */
+.vintage-input {
+  background: #fdf8ec;
+  border: 1px solid var(--sepia);
+  border-bottom: 2px solid var(--sepia-dark);
+  border-radius: 0;
+  color: var(--ink);
+  font-family: "Lora", serif;
+  padding: 10px 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.vintage-input:focus {
+  border-color: var(--ink);
+  background: #fffdf5;
+}
+
+/* ── Status badges ── */
+.status-badge {
+  font-family: "Special Elite", monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid;
+}
+.status-pending { color: var(--aged); border-color: var(--aged); }
+.status-replied { color: var(--wax); border-color: var(--wax); background: rgba(122,21,21,0.06); }
+
+/* ── Decorative dividers ── */
+.divider-ornament {
+  text-align: center;
+  color: var(--sepia);
+  letter-spacing: 0.3em;
+  font-size: 13px;
+  margin: 14px 0;
+}
+
+.ornamental-border {
+  border: 1px solid var(--sepia);
+  outline: 3px solid transparent;
+  outline-offset: -6px;
+  box-shadow: inset 0 0 0 6px transparent, 0 0 0 1px var(--sepia);
+  position: relative;
+}
+
+/* ── Animations ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

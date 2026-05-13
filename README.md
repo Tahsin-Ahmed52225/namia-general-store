@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Miracle of Namia General Store
 
-## Getting Started
+Anonymous letter exchange portal. Users write under a fake name + PIN. Admin replies. Letters expire in 24 hours.
 
-First, run the development server:
+## Quick Start (Docker)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Edit secrets in .env first
+nano .env   # change ADMIN_PASSWORD and JWT_SECRET
+
+docker compose up --build
+
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables (`.env`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL URL (pre-set for Docker Compose) |
+| `ADMIN_PASSWORD` | Admin login password |
+| `JWT_SECRET` | JWT signing secret (min 32 chars) |
+| `CRON_SECRET` | Bearer token for `/api/cron/cleanup` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Local Development
 
-## Learn More
+```bash
+cp .env .env.local
+# Update DATABASE_URL to your local PostgreSQL
 
-To learn more about Next.js, take a look at the following resources:
+npm install
+npx prisma migrate deploy
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | Description |
+|---|---|
+| `/` | Letter dock (public) + hero |
+| `/write` | Write an anonymous letter |
+| `/unlock/[id]` | Unlock letter with PIN |
+| `/admin` | Admin login |
+| `/admin/dashboard` | Admin reply panel |
 
-## Deploy on Vercel
+## Architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 16** (App Router, standalone output)
+- **PostgreSQL** via Prisma 7 + `@prisma/adapter-pg`
+- **Docker Compose**: `app` + `db` + `cron` services
+- **Auth**: bcrypt PIN hashing, httpOnly JWT cookie for admin
+- **Privacy**: no real names/emails/IPs stored; PIN is bcrypt-hashed (one-way)
