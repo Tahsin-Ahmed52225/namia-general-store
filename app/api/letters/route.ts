@@ -48,5 +48,17 @@ export async function POST(request: NextRequest) {
     select: { id: true, fakeUsername: true, status: true, createdAt: true },
   });
 
+  // Telegram notification — fire and forget
+  const tgToken = process.env.TELEGRAM_BOT_TOKEN;
+  const tgChat = process.env.TELEGRAM_CHAT_ID;
+  if (tgToken && tgChat) {
+    const text = `📬 New letter in the dock\n\nFrom: ${fakeUsername.trim()}\n\n${message.trim().slice(0, 300)}${message.trim().length > 300 ? "…" : ""}`;
+    fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: tgChat, text }),
+    }).catch(() => {}); // never block the response
+  }
+
   return Response.json(letter, { status: 201 });
 }

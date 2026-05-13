@@ -15,16 +15,9 @@ export default function EnvelopeCard({ id, fakeUsername, status }: EnvelopeCardP
 
   return (
     <Link href={`/unlock/${id}`} className="block group" style={{ marginTop: 12 }}>
-      <div className="envelope-card rounded-sm" style={{ minHeight: 160 }}>
+      <div className="envelope-card rounded-sm relative" style={{ minHeight: 160 }}>
 
         {/* Name strip at top (above flap visually) */}
-        <div
-          className="relative z-10 pt-3 px-4 text-center"
-          style={{ fontFamily: "Playfair Display, serif", color: "#2c1810" }}
-        >
-          <p className="font-semibold text-sm leading-snug truncate">{fakeUsername}</p>
-        </div>
-
         {/* V-flap */}
         <div className="envelope-flap" />
 
@@ -32,8 +25,12 @@ export default function EnvelopeCard({ id, fakeUsername, status }: EnvelopeCardP
         <div className="envelope-fold-left" />
         <div className="envelope-fold-right" />
 
-        {/* Status */}
-        <div className="relative z-10 text-center mt-2 pb-10">
+        {/* Centered name + status */}
+        <div
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 px-4"
+          style={{ fontFamily: "Playfair Display, serif", color: "#2c1810" }}
+        >
+          <p className="font-extrabold text-xl leading-snug text-center truncate w-full">{fakeUsername}</p>
           <span className={`status-badge ${replied ? "status-replied" : "status-pending"}`}>
             {replied ? "Reply inside" : "Awaiting"}
           </span>
